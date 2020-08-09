@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="/styles/style.css">
+        <link rel="stylesheet" href="/styles/icons.css">
+    </head>
+    <body>
+        <header>
+            <nav>
+                <h1>best Book</h1>
+                <section>
+                    <span class="icon-menu"></span>
+                </section>
+            </nav>
+        </header>
+        <main>
+                <div id="mainWraper">
+                    <% booksResult.forEach (book => {  %>
+                        <section class="bookSec">
+                            <img class="bookCover" src="<%= book.image_url %>" alt="">
+                            <h2 class="bookTitle"><%= book.title %></h2>
+                            <p class="bookAuthor"><%= book.author %></p>
+                            <p class="desc"><%= book.description.substring(0, 100) %></p>
+                        </section>
+                    <% }) %>
+                </div>
+        </main>
+    </body>
+</html>
