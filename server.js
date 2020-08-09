@@ -27,9 +27,9 @@ app.get('/search/new',(req,res)=>{
 app.post('/searches',(req,res)=>{
   var searchKey = req.body.bookSearch;
   var searchType = req.body.searchType;
-  let url = `https://www.googleapis.com/books/v1/volumes?q=${searchKey}+in${searchType}`;
+  let url = `https://www.googleapis.com/books/v1/volumes?q=in${searchType}:${searchKey}`;
 
-  superagent.get(url)
+  superagent.get(encodeURI(url))
     .then(bookData =>{
       let result = bookData.body.items.map(element => {
         return new Book(element);
@@ -39,11 +39,15 @@ app.post('/searches',(req,res)=>{
     });
 });
 
+app.get('/*',(req,res)=>{
+  res.render('pages/error.ejs');
+});
+
 function Book(book) {
   this.author = book && book.volumeInfo && book.volumeInfo.authors || 'Author Unknown';
   this.title = book && book.volumeInfo && book.volumeInfo.title || 'Title Missing';
   this.isbn = book && book.volumeInfo && book.volumeInfo.industryIdentifiers && book.volumeInfo.industryIdentifiers[0] && book.volumeInfo.industryIdentifiers[0].type + book.volumeInfo.industryIdentifiers[0].identifier || 'ISBN Missing';
-  this.image_url = book && book.volumeInfo && book.volumeInfo.imageLinks.thumbnail || 'https://i.imgur.com/J5LVHEL.jpeg';
+  this.image_url = book && book.volumeInfo && book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail || 'https://i.imgur.com/J5LVHEL.jpeg';
   this.description = book && book.volumeInfo && book.volumeInfo.description || 'Description Missing';
 }
 
