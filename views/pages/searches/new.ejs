@@ -1,0 +1,36 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/styles/icons.css">
+
+</head>
+<body>
+    <header>
+        <nav>
+            <h1>best Book</h1>
+            <section>
+                <span class="icon-menu"></span>
+            </section>
+        </nav>
+    </header>
+    <h1 id="indexH1">Search by title or author</h1>
+    <form action="/searches" method="POST" id="searchForm">
+        <div id="searchDiv">
+            <input type="text" name="bookSearch" id="searchText">
+        </div>
+        <div id="radioDiv">
+            <div class="btnRadio">
+                <label for="male">Title <input type="radio" id="title-author" name="searchType" value="title" ></label>
+            </div>
+            <div class="btnRadio">
+                <label for="male">author <input type="radio" id="title-author" name="searchType" value="author"></label>
+            </div>
+            
+        </div>
+        <button type="submit">Search</button>
+    </form>
+</body>
+</html>
