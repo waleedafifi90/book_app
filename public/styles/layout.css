@@ -1,0 +1,11 @@
+#mainWraper{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.search-form {
+    max-width: 480px;
+    margin: 0 auto;
+}
