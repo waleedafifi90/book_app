@@ -1,0 +1,89 @@
+
+.bookDtl {
+    margin: 5px;
+    height: 30px;
+    width: 75%;
+}
+
+.bookDtlForm input {
+    display: none;
+}
+
+.bookDtlForm {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: space-evenly;
+}
+
+.bookSec {
+    width: calc(30% - 5%);
+    text-align: center;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+
+    text-align: center;
+    background-color: #d8d8d8;
+    margin: 1%;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    border-radius: 3px;
+    padding: 3%;
+}
+
+.bookCover {
+    width: 60%;
+    margin: 20px auto 0;
+    outline: #fff solid 10px;
+
+}
+
+.bookTitle {
+    color: #fff;
+    text-shadow: 0px 3px 2px rgba(150, 150, 150, 1);
+    font-size: 16px;
+    padding-top: 15px;
+}
+
+.bookAuthor {
+    color: #4a4a4a;
+    font-size: 12px;
+    padding: 15px 0;
+}
+
+.desc {
+    color: #4a4a4a;
+    margin-bottom: 20px;
+    text-align: left;
+    font-size: 12px;
+}
+
+.details-section .desc {
+    background-color: #eee;
+    padding: 20px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+}
+
+.details-section p {
+    font-size: 10px;
+}
+
+@media (min-width: 320px) and (max-width: 480px){
+    .bookSec {
+        width: 100%;
+        padding: 8%;
+        margin: 5%;
+    }   
+}
+
+@media (min-width: 768px) and (max-width: 1024px){
+    .bookSec {
+        width: 40%;
+        margin: 5% 1%;
+        padding: 4%;
+    }    
+}

@@ -1,4 +1,4 @@
-#mainWraper{
+#mainWraper {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -8,4 +8,17 @@
 .search-form {
     max-width: 480px;
     margin: 0 auto;
+}
+
+.btn {
+    width: 150px;
+    line-height: 50px;
+    text-align: center;
+    margin: 0 auto;
+    border-radius: 8px;
+}
+
+.btn-black {
+    color: #fff;
+    background-color: #000;
 }

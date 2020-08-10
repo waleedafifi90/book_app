@@ -1,4 +1,4 @@
-<%- include('./partials/header') %>
+<%- include('./layout/header') %>
 <main>
     <div id="mainWraper">
         <% books.forEach (book => {  %>
@@ -7,10 +7,10 @@
             <h2 class="bookTitle"><%= book.title %></h2>
             <p class="bookAuthor"><%= book.author %></p>
             <p class="desc"><%= book.description.substring(0, 100) %></p>
-            <a href="/books/<%= book.id %>">View details</a>
+            <a class="btn btn-black" href="/books/<%= book.id %>">View details</a>
         </section>
         <% }) %>
         <p id="bookCount">Number of books: <%= books.length %></p>
     </div>
 </main>
-<%- include('./partials/footer') %>
+<%- include('./layout/footer') %>

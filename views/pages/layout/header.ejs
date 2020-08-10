@@ -9,12 +9,16 @@
     <link rel="stylesheet" href="/styles/base.css">
     <link rel="stylesheet" href="/styles/layout.css">
     <link rel="stylesheet" href="/styles/modules.css">
+    <link rel="stylesheet" href="/styles/modules/details_module.css">
+    <link rel="stylesheet" href="/styles/modules/nav_module.css">
+    <link rel="stylesheet" href="/styles/modules/search_module.css">
+
     <link rel="stylesheet" href="/styles/icons.css">
 </head>
 
 <body>
-    <header>
-        <nav class="topnav">
+    <header class="header">
+        <!-- <nav class="topnav">
             <a href="/" class="active">Best Book</a>
             <div id="myLinks">
                 <a href="/">Home</a>
@@ -23,5 +27,14 @@
             <a href="javascript:void(0);" class="icon" onclick="burggerMenuFunction();">
                 <span class="icon-menu"></span>
             </a>
-        </nav>
+        </nav> -->
+        <nav role="navigation">
+            <a href="" class="logo">Book List</a>
+            <input class="menu-btn" type="checkbox" id="menu-btn" />
+            <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
+            <ul class="menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/search/new">Search</a></li>
+            </ul>
+          </nav>
     </header>
