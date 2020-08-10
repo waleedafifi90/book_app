@@ -20,48 +20,17 @@ const client = new pg.Client(process.env.DATABASE_URL);
 
 app.get('/', home);
 
+app.post('/searches', searchForBook);
 app.get('/books/:id', bookDetails);
+app.post('/books', saveBookToDataBase);
+app.get('/search/new', searchPage);
+
+app.get('/*', handleError);
 
 app.get('/hello', (req, res) => {
   res.render('./pages/index.ejs');
 });
 
-app.get('/search/new', (req, res) => {
-  res.render('./pages/searches/new.ejs');
-});
-
-app.post('/searches', (req, res) => {
-  var searchKey = req.body.bookSearch;
-  var searchType = req.body.searchType;
-  let url = `https://www.googleapis.com/books/v1/volumes?q=in${searchType}:${searchKey}`;
-
-  superagent.get(encodeURI(url))
-    .then(bookData => {
-      let result = bookData.body.items.map(element => {
-        return new Book(element);
-      });
-      res.render('./pages/searches/show', {
-        booksResult: result
-      });
-
-    });
-});
-
-app.post('/books', (req, res) => {
-  let newSQL = `INSERT INTO booklist (author, title, isbn, image_url, description, bookshelf) VALUES ($1, $2, $3, $4, $5, 'Fantasy') RETURNING id;`;
-  console.log('newSQL', newSQL);
-  let newValues = [req.body.author, req.body.title, req.body.isbn, req.body.image_url, req.body.description];
-
-  return client.query(newSQL, newValues)
-    .then(result => {
-      res.redirect(`/books/${result.rows[0].id}`);
-    })
-    .catch(console.error);
-});
-
-app.get('/*', (req, res) => {
-  res.render('pages/error.ejs');
-});
 
 function home(req, res) {
   let SQL = 'SELECT * FROM booklist';
@@ -95,6 +64,43 @@ function bookDetails(req, res) {
     });
 }
 
+function searchForBook(req, res) {
+  var searchKey = req.body.bookSearch;
+  var searchType = req.body.searchType;
+  let url = `https://www.googleapis.com/books/v1/volumes?q=in${searchType}:${searchKey}`;
+
+  superagent.get(encodeURI(url))
+    .then(bookData => {
+      let result = bookData.body.items.map(element => {
+        return new Book(element);
+      });
+      res.render('./pages/searches/show', {
+        booksResult: result
+      });
+
+    });
+}
+
+function saveBookToDataBase(req, res) {
+  let newSQL = `INSERT INTO booklist (author, title, isbn, image_url, description, bookshelf) VALUES ($1, $2, $3, $4, $5, 'Fantasy') RETURNING id;`;
+  console.log('newSQL', newSQL);
+  let newValues = [req.body.author, req.body.title, req.body.isbn, req.body.image_url, req.body.description];
+
+  return client.query(newSQL, newValues)
+    .then(result => {
+      res.redirect(`/books/${result.rows[0].id}`);
+    })
+    .catch(console.error);
+}
+
+function handleError (err, response) {
+  console.error(err);
+  response.render('pages/error', err);
+}
+
+function searchPage(req, res) {
+  res.render('./pages/searches/new.ejs');
+}
 
 function Book(book) {
   this.author = book && book.volumeInfo && book.volumeInfo.authors || 'Author Unknown';

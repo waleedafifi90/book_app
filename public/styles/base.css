@@ -29,4 +29,9 @@ header {
 header nav {
     padding: 20px 0;
     color: #fff;
+    overflow: auto;
+}
+
+a {
+    text-decoration: none;
 }
