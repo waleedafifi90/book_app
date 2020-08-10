@@ -52,7 +52,7 @@ app.get('/*', (req, res) => {
 });
 
 function home(req, res) {
-  let SQL = 'SELECT * FROM books';
+  let SQL = 'SELECT * FROM booklist';
   return client.query(SQL)
     .then(result => {
       res.render('pages/index', {
@@ -69,7 +69,7 @@ function home(req, res) {
 }
 
 function bookDetails(req, res) {
-  let SQL = 'SELECT * FROM books where id=$1';
+  let SQL = 'SELECT * FROM booklist where id=$1';
   let values = [req.params.id];
 
   return client.query(SQL, values)
