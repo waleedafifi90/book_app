@@ -1,0 +1,14 @@
+<%- include('../partials/header') %>
+<main>
+    <div id="mainWraper">
+        <section class="bookSec details-section">
+            <img class="bookCover" src="<%= books.image_url %>" alt="">
+            <h2 class="bookTitle"><%= books.title %></h2>
+            <p class="bookAuthor"><%= books.author %></p>
+            <p class="desc"><%= books.description.substring(0, 100) %></p>
+            <p>ISBN: <%= books.isbn %></p>
+            <p>Bookshelf: <%= books.bookshelf %></p>
+        </section>
+    </div>
+</main>
+<%- include('../partials/footer') %>

@@ -1,3 +1,15 @@
 <%- include('./partials/header') %>
-<h1>Hello World</h1>
+<main>
+    <div id="mainWraper">
+        <% books.forEach (book => {  %>
+        <section class="bookSec">
+            <img class="bookCover" src="<%= book.image_url %>" alt="">
+            <h2 class="bookTitle"><%= book.title %></h2>
+            <p class="bookAuthor"><%= book.author %></p>
+            <p class="desc"><%= book.description.substring(0, 100) %></p>
+        </section>
+        <% }) %>
+        <p id="bookCount">Number of books: <%= books.length %></p>
+    </div>
+</main>
 <%- include('./partials/footer') %>

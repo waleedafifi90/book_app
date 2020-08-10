@@ -66,6 +66,16 @@
     font-size: 12px;
 }
 
+.details-section .desc {
+    background-color: #eee;
+    padding: 20px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+}
+.details-section p {
+    font-size: 10px;
+}
+
 /* NAV */
 .topnav {
     overflow: hidden;
