@@ -21,7 +21,7 @@
     width: calc(30% - 5%);
     text-align: center;
     display: flex;
-    flex-flow: column wrap;
+    flex-flow: column;
     justify-content: space-around;
 
     text-align: center;
