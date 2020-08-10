@@ -6,6 +6,8 @@ const app = express()
 const superagent = require('superagent')
 const PORT = process.env.PORT || 3000;
 const pg = require('pg');
+const fs = require('fs');
+app.use(express.json());
 
 app.use(express.json());
 app.use(express.urlencoded({
@@ -25,7 +27,9 @@ app.get('/books/:id', bookDetails);
 app.post('/books', saveBookToDataBase);
 app.get('/search/new', searchPage);
 
+app.get('/read-json', readJSON);
 app.get('/*', handleError);
+
 
 app.get('/hello', (req, res) => {
   res.render('./pages/index.ejs');
@@ -100,6 +104,26 @@ function handleError (err, response) {
 
 function searchPage(req, res) {
   res.render('./pages/searches/new.ejs');
+}
+
+function readJSON(req, res) {
+  var obj;
+  fs.readFile('book.json', 'utf8', function (err, data) {
+    if (err) throw err;
+    obj = JSON.parse(data);
+    console.log(obj);
+
+    obj.map( item => {
+      let newSQL = `INSERT INTO booklist (author, title, isbn, image_url, description, bookshelf) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id;`;
+      let newValues = [item.author, item.title, item.isbn, item.image_url, item.description, item.bookshelf];
+      return client.query(newSQL, newValues)
+        .then(result => {
+          console.log(result);
+        // res.redirect(`/books/${result.rows[0].id}`);
+        })
+        .catch(console.error);
+    });
+  });
 }
 
 function Book(book) {
