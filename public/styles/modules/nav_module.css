@@ -23,11 +23,6 @@
       border-right: none;
   }
   
-  .header li a:hover,
-  .header .menu-btn:hover {
-    background-color: #f4f4f4;
-  }
-  
   .header .logo {
     display: block;
     float: left;
