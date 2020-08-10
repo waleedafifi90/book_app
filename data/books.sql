@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS books;
+DROP TABLE IF EXISTS booklist;
 
-CREATE TABLE books(
+CREATE TABLE booklist(
   id SERIAL PRIMARY KEY,
   author VARCHAR(255),
   title VARCHAR(255),
@@ -10,7 +10,7 @@ CREATE TABLE books(
   bookshelf VARCHAR(255)
 );
 
-INSERT INTO books (author, title, isbn, image_url, description, bookshelf) VALUES (
+INSERT INTO booklist (author, title, isbn, image_url, description, bookshelf) VALUES (
   'J. R. R. Tolkien',
   'The Hobbit',
   'ISBN_13 9786050465112',
@@ -19,7 +19,7 @@ INSERT INTO books (author, title, isbn, image_url, description, bookshelf) VALUE
   'Drama'
 );
 
-INSERT INTO books (author, title, isbn, image_url, description, bookshelf) VALUES (
+INSERT INTO booklist (author, title, isbn, image_url, description, bookshelf) VALUES (
   'J.K. Rowling',
   'Harry Potter and the Sorcerer''s Stone',
   'ISBN_13 9781781100486',
