@@ -47,6 +47,18 @@ app.post('/searches', (req, res) => {
     });
 });
 
+app.post('/books', (req, res) => {
+  let newSQL = `INSERT INTO booklist (author, title, isbn, image_url, description, bookshelf) VALUES ($1, $2, $3, $4, $5, 'Fantasy') RETURNING id;`;
+  console.log('newSQL', newSQL);
+  let newValues = [req.body.author, req.body.title, req.body.isbn, req.body.image_url, req.body.description];
+
+  return client.query(newSQL, newValues)
+    .then(result => {
+      res.redirect(`/books/${result.rows[0].id}`);
+    })
+    .catch(console.error);
+});
+
 app.get('/*', (req, res) => {
   res.render('pages/error.ejs');
 });
@@ -91,10 +103,6 @@ function Book(book) {
   this.image_url = book && book.volumeInfo && book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail || 'https://i.imgur.com/J5LVHEL.jpeg';
   this.description = book && book.volumeInfo && book.volumeInfo.description || 'Description Missing';
 }
-
-// app.listen(PORT, ()=>{
-//   console.log(`Listening to Port ${PORT}`);
-// });
 
 client.connect().then(() => {
   app.listen(PORT, () => {

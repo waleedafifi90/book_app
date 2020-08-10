@@ -7,6 +7,7 @@
             <h2 class="bookTitle"><%= book.title %></h2>
             <p class="bookAuthor"><%= book.author %></p>
             <p class="desc"><%= book.description.substring(0, 100) %></p>
+            <a href="/books/<%= book.id %>">View details</a>
         </section>
         <% }) %>
         <p id="bookCount">Number of books: <%= books.length %></p>
