@@ -5,43 +5,84 @@ const express = require('express');
 const app = express()
 const superagent = require('superagent')
 const PORT = process.env.PORT || 3000;
+const pg = require('pg');
 
 app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({
+  extended: true
+}));
 
 app.use(express.static('./public'));
 app.set('view engine', 'ejs');
 
-app.get('/',(req,res)=>{
+//database
+const client = new pg.Client(process.env.DATABASE_URL);
+
+app.get('/', home);
+
+app.get('/books/:id', bookDetails);
+
+app.get('/hello', (req, res) => {
   res.render('./pages/index.ejs');
 });
 
-app.get('/hello',(req,res)=>{
-  res.render('./pages/index.ejs');
-});
-
-app.get('/search/new',(req,res)=>{
+app.get('/search/new', (req, res) => {
   res.render('./pages/searches/new.ejs');
 });
 
-app.post('/searches',(req,res)=>{
+app.post('/searches', (req, res) => {
   var searchKey = req.body.bookSearch;
   var searchType = req.body.searchType;
   let url = `https://www.googleapis.com/books/v1/volumes?q=in${searchType}:${searchKey}`;
 
   superagent.get(encodeURI(url))
-    .then(bookData =>{
+    .then(bookData => {
       let result = bookData.body.items.map(element => {
         return new Book(element);
       });
-      res.render('./pages/searches/show',{booksResult: result });
+      res.render('./pages/searches/show', {
+        booksResult: result
+      });
 
     });
 });
 
-app.get('/*',(req,res)=>{
+app.get('/*', (req, res) => {
   res.render('pages/error.ejs');
 });
+
+function home(req, res) {
+  let SQL = 'SELECT * FROM books';
+  return client.query(SQL)
+    .then(result => {
+      res.render('pages/index', {
+
+        books: result.rows
+      });
+      console.log({
+        books: result.rows
+      });
+    })
+    .catch(err => {
+      console.log('database request error', err);
+    });
+}
+
+function bookDetails(req, res) {
+  let SQL = 'SELECT * FROM books where id=$1';
+  let values = [req.params.id];
+
+  return client.query(SQL, values)
+    .then(result => {
+      res.render('pages/books/details', {
+        books: result.rows[0]
+      });
+    })
+    .catch(err => {
+      console.log('database request error', err);
+    });
+}
+
 
 function Book(book) {
   this.author = book && book.volumeInfo && book.volumeInfo.authors || 'Author Unknown';
@@ -51,6 +92,12 @@ function Book(book) {
   this.description = book && book.volumeInfo && book.volumeInfo.description || 'Description Missing';
 }
 
-app.listen(PORT, ()=>{
-  console.log(`Listening to Port ${PORT}`);
+// app.listen(PORT, ()=>{
+//   console.log(`Listening to Port ${PORT}`);
+// });
+
+client.connect().then(() => {
+  app.listen(PORT, () => {
+    console.log(`listening to port : ${PORT}`);
+  });
 });
