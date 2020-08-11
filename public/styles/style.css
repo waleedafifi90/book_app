@@ -56,3 +56,34 @@
     outline: #fff solid 10px;
     margin-bottom: 10px;
 }
+
+
+#filltre {
+    margin: 50px auto;
+    width: 250px;
+    padding: 5px 55px 5px 5px;
+    font-size: 16px;
+    border: 1px solid #CCC;
+    height: 34px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: url(https://johnsharpmd.com/wp-content/uploads/author_icon.png) 96% / 15% no-repeat #EEE;
+    display: block;
+  }
+  
+  
+  /* CAUTION: Internet Explorer hackery ahead */
+  
+  
+  #filltre::-ms-expand {
+      display: none; /* Remove default arrow in Internet Explorer 10 and 11 */
+  }
+  
+  /* Target Internet Explorer 9 to undo the custom arrow */
+  @media screen and (min-width:0\0) {
+    #filltre {
+          background: none\9;
+          padding: 5px\9;
+      }
+  }

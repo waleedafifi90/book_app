@@ -1,0 +1,11 @@
+<%- include('../layout/header') %>
+<main class="flex-column">
+    <section class="bookSec">
+        <form action="/authors" method="POST">
+            <input type="text" value="" name="author_name">
+            <input type="text" value="" name="book_id">
+            <input type="submit" class="btn btn-black" value="Add new Author">
+        </form>
+    </section>
+</main>
+<%- include('../layout/footer') %>

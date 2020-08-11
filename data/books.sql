@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS booklist;
+DROP TABLE IF EXISTS authors;
 
 CREATE TABLE booklist(
   id SERIAL PRIMARY KEY,
@@ -8,6 +9,14 @@ CREATE TABLE booklist(
   image_url VARCHAR(500),
   description TEXT,
   bookshelf VARCHAR(255)
+);
+
+CREATE TABLE authors (
+  id SERIAL PRIMARY KEY,
+  author_name VARCHAR(255),
+  book_id INT,
+  CONSTRAINT FK_bookID FOREIGN KEY (book_id)
+    REFERENCES booklist(id)
 );
 
 INSERT INTO booklist (author, title, isbn, image_url, description, bookshelf) VALUES (
