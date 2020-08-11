@@ -42,6 +42,8 @@ app.delete('/books/:id', deleteBook);
 app.get('/books/edit/:id', visitBookUpdate);
 app.put('/books/:id', updateBook);
 
+app.get('/authors/add', visitNewAuthor);
+app.post('/authors', addNeweAuthor);
 
 app.get('/hello', (req, res) => {
   res.render('./pages/index.ejs');
@@ -51,15 +53,17 @@ app.get('/*', handleError);
 
 
 function home(req, res) {
-  let SQL = 'SELECT * FROM booklist';
+  let SQL = 'SELECT * FROM booklist; SELECT * FROM authors';
   return client.query(SQL)
     .then(result => {
       res.render('pages/index', {
 
-        books: result.rows
+        books: result[0].rows,
+        authors: result[1].rows
       });
       console.log({
-        books: result.rows
+        books: result[0].rows,
+        authors: result[1].rows
       });
     })
     .catch(err => {
@@ -95,7 +99,6 @@ function searchForBook(req, res) {
       res.render('./pages/searches/show', {
         booksResult: result
       });
-
     });
 }
 
@@ -166,6 +169,22 @@ function updateBook(request, response) {
     })
 }
 
+function visitNewAuthor(req, res) {
+  res.render('./pages/author/add.ejs');
+}
+
+function addNeweAuthor(req, res) {
+  let newSQL = `INSERT INTO authors (author_name, book_id) VALUES ($1, $2) RETURNING id;`;
+  let newValues = [req.body.author_name, req.body.book_id];
+  return client.query(newSQL, newValues)
+    .then(result => {
+      res.send(result.rows);
+    // res.redirect(`/books/${result.rows[0].id}`);
+    })
+    .catch(console.error);
+
+}
+
 function readJSON(req, res) {
   var obj;
   fs.readFile('book.json', 'utf8', function (err, data) {
@@ -192,6 +211,11 @@ function Book(book) {
   this.isbn = book && book.volumeInfo && book.volumeInfo.industryIdentifiers && book.volumeInfo.industryIdentifiers[0] && book.volumeInfo.industryIdentifiers[0].type + book.volumeInfo.industryIdentifiers[0].identifier || 'ISBN Missing';
   this.image_url = book && book.volumeInfo && book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail || 'https://i.imgur.com/J5LVHEL.jpeg';
   this.description = book && book.volumeInfo && book.volumeInfo.description || 'Description Missing';
+}
+
+function Author(obj) {
+  this.author_name = obj.author_name;
+  this.book_id = obj.book_id;
 }
 
 client.connect().then(() => {

@@ -1,8 +1,16 @@
 <%- include('./layout/header') %>
 <main>
+    <select name="" id="filltre">
+        <option value="all">All Books</option>
+        <% authors.forEach( item => { %>
+            <option value="<%= item.author_name %>"><%= item.author_name %></option>
+        <% }) %>
+    </select>
+
     <div id="mainWraper">
+
         <% books.forEach (book => {  %>
-        <section class="bookSec">
+        <section class="bookSec" data-type="<%= book.author %>" >
             <img class="bookCover" src="<%= book.image_url %>" alt="">
             <h2 class="bookTitle"><%= book.title %></h2>
             <p class="bookAuthor"><%= book.author %></p>
