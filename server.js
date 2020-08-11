@@ -7,7 +7,7 @@ const superagent = require('superagent')
 const PORT = process.env.PORT || 3000;
 const pg = require('pg');
 const fs = require('fs');
-app.use(express.json());
+const methodOverride = require('method-override');
 
 app.use(express.json());
 app.use(express.urlencoded({
@@ -20,6 +20,15 @@ app.set('view engine', 'ejs');
 //database
 const client = new pg.Client(process.env.DATABASE_URL);
 
+app.use(methodOverride((request, response) => {
+  if(request.body && typeof request.body === 'object' && '_method' in request.body) {
+    console.log(request.body['_method']);
+    let method = request.body['_method'];
+    delete request.body['_method'];
+    return method; //returns PUT, PATCH, POST, GET, or DELETE.
+  }
+}));
+
 app.get('/', home);
 
 app.post('/searches', searchForBook);
@@ -28,12 +37,17 @@ app.post('/books', saveBookToDataBase);
 app.get('/search/new', searchPage);
 
 app.get('/read-json', readJSON);
-app.get('/*', handleError);
+
+app.delete('/books/:id', deleteBook);
+app.get('/books/edit/:id', visitBookUpdate);
+app.put('/books/:id', updateBook);
 
 
 app.get('/hello', (req, res) => {
   res.render('./pages/index.ejs');
 });
+
+app.get('/*', handleError);
 
 
 function home(req, res) {
@@ -104,6 +118,52 @@ function handleError (err, response) {
 
 function searchPage(req, res) {
   res.render('./pages/searches/new.ejs');
+}
+
+function deleteBook(request, response) {
+  console.log (`deleting the booklist ${request.params.id}`);
+  client.query(`DELETE FROM booklist WHERE id=$1`, [request.params.id])
+    .then(result => {
+      console.log(result);
+      response.redirect('/');
+    })
+    .catch( err => {
+      console.log('delete book error')
+      return handleError(err, response);
+    });
+}
+
+function visitBookUpdate(request, response){
+  console.log('Error Adnan');
+  let SQL = 'SELECT * FROM booklist where id=$1';
+  let SQL1 = 'select DISTINCT bookshelf from booklist';
+  let values = [request.params.id];
+  return client.query(SQL, values)
+    .then(result => {
+      client.query(SQL1, []).then( bookShelf => {
+        console.log(bookShelf);
+        response.render('./pages/books/edit', { selected_book: result.rows[0], bookshelf: bookShelf.rows});
+      });
+    })
+    .catch(err => {
+      console.log('database request error');
+      return handleError(err, response);
+    });
+}
+
+function updateBook(request, response) {
+  console.log (`updating book ${request.params.id}`);
+  const values = [request.body.title, request.body.isbn, request.body.image_url, request.body.description, request.body.bookshelf, request.body.author, request.params.id];
+
+  client.query(`UPDATE booklist SET title=$1, isbn=$2, image_url=$3, description=$4, bookshelf=$5, author=$6  WHERE id=$7`, values)
+    .then(result => {
+      console.log(result);
+      response.redirect(`/books/${request.params.id}`);
+    })
+    .catch( err => {
+      console.log('update book error')
+      return handleError(err, response);
+    })
 }
 
 function readJSON(req, res) {

@@ -8,6 +8,12 @@
             <p class="desc"><%= books.description.substring(0, 100) %></p>
             <p>ISBN: <%= books.isbn %></p>
             <p>Bookshelf: <%= books.bookshelf %></p>
+
+            <form class="form-edit-delete" action="/books/<%=books.id%>" method="POST">
+                <input type="hidden" name="_method" value="DELETE">
+                <button class="btn btn-black" type="submit" value="">Remove book</button>
+                <button class="btn btn-black" type="button" onclick="window.location.replace('/books/edit/<%=books.id%>')" value="">Edit book</button>
+            </form>
         </section>
     </div>
 </main>
