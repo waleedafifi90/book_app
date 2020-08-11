@@ -9,7 +9,7 @@
             <input type="text" value="<%= selected_book.isbn%>" name="isbn">
             <input type="text" value="<%= selected_book.image_url%>" name="image_url">
             <textarea name="description"><%= selected_book.description%></textarea>
-            <input type="text" list="bookshelf" name="bookshelf" id="browser" value="<%= selected_book.bookshelf%>">
+            <input autocomplete="off" type="text" list="bookshelf" name="bookshelf" id="browser" value="<%= selected_book.bookshelf%>">
             <datalist id="bookshelf">
                 <% bookshelf.forEach( item => { %>
                     <option value="<%= item.bookshelf %>">
